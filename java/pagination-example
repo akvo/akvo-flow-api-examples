@@ -1,0 +1,10 @@
+#/bin/bash
+
+# Usage:
+# ./pagination-example \
+#       --host http://<instance>.akvoflow.org \
+#       --access_key <access-key> \
+#       --secret <secret> \
+#       --survey_id <survey-id>
+
+java -cp lib/*:bin/ PaginationExample $*
