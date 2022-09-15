@@ -108,3 +108,61 @@ def handle_video(data):
 
 def handle_signature(data):
     return data.get('name', "")
+
+
+def parse_data(raw_data, form, debug):
+    question_group_list = {}
+    question_list = {}
+    for qg in form.get("questionGroups"):
+        question_group_list.update(
+            {qg["id"]: {
+                 "name": qg["name"],
+                 "repeatable": qg["repeatable"]
+             }})
+        for q in qg.get("questions"):
+            question_list.update(
+                {q["id"]: {
+                     "name": q["name"],
+                     "type": q["type"]
+                 }})
+    collections = []
+    for form_instance in raw_data:
+        if debug:
+            print("___________________________________________________\n")
+        metadata = {}
+        for meta in form_instance:
+            if meta != "responses":
+                metadata.update({meta: form_instance[meta]})
+                if debug:
+                    print(f"{meta}: {form_instance[meta]}")
+        data = metadata
+        groups = []
+        for qg in question_group_list:
+            data_group = {}
+            group_name = question_group_list[qg]["name"]
+            if debug:
+                print(f"\nGROUP: {group_name}\n")
+            data_group.update({"name": group_name})
+            question_group_responses = form_instance.get("responses").get(qg)
+            values = []
+            if question_group_responses:
+                for repeat, responses in enumerate(question_group_responses):
+                    value = {"repeat_index": repeat}
+                    answers = {}
+                    if question_group_list[qg]["repeatable"] and debug:
+                        print(f"  REPEAT: {repeat}\n")
+                    for qid in responses:
+                        question = question_list[qid]
+                        answer = responses[qid]
+                        answer = flow_handler(answer, question.get("type"))
+                        question_name = question.get("name")
+                        answers.update({question_name: answer})
+                        if debug:
+                            print(f"  Q:{question_name}\n  A:{answer}\n")
+                    value.update({"answers": answers})
+                    values.append(value)
+            data_group.update({"data": values})
+            groups.append(data_group)
+        data.update({"groups": groups})
+        collections.append(data)
+    return collections
