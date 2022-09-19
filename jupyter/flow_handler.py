@@ -115,16 +115,20 @@ def parse_data(raw_data, form, debug):
     question_list = {}
     for qg in form.get("questionGroups"):
         question_group_list.update(
-            {qg["id"]: {
-                 "name": qg["name"],
-                 "repeatable": qg["repeatable"]
-             }})
+            {
+                qg["id"]: {
+                    "name": qg["name"],
+                    "repeatable": qg["repeatable"]
+                }
+            })
         for q in qg.get("questions"):
             question_list.update(
-                {q["id"]: {
-                     "name": q["name"],
-                     "type": q["type"]
-                 }})
+                {
+                    q["id"]: {
+                        "name": q["name"],
+                        "type": q["type"]
+                    }
+                })
     collections = []
     for form_instance in raw_data:
         if debug:
