@@ -27,8 +27,10 @@ def get_response(token, url):
         "Accept": "application/vnd.akvo.flow.v2+json",
         "Authorization": "Bearer {}".format(token)
     }
-    response = r.get(url, headers=headers).json()
-    return response
+    response = r.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return False
 
 
 def get_folders(baseURI, token, parent_id=0):
@@ -36,24 +38,36 @@ def get_folders(baseURI, token, parent_id=0):
 
 
 def get_surveys(baseURI, token, folder_id=0):
-    return get_response(token, f"{baseURI}/surveys?folder_id={folder_id}").get("surveys")
+    return get_response(
+        token,
+        f"{baseURI}/surveys?folder_id={folder_id}").get("surveys")
 
 
 def get_forms(baseURI, token, survey_id):
     return get_response(token, f"{baseURI}/surveys/{survey_id}").get("forms")
 
 
-def get_form_instances(baseURI, token, survey_id, form_id, limit=False,
-                       next_page_url=False, result=[]):
+def get_form_instances(
+    baseURI,
+    token,
+    survey_id,
+    form_id,
+    limit=False,
+    next_page_url=False,
+    result=[]
+):
     url = f"{baseURI}/form_instances?survey_id={survey_id}&form_id={form_id}"
     if next_page_url:
         url = next_page_url
     res = get_response(token, url)
+    if not res:
+        return result
     result += res.get("formInstances")
     if limit:
         if len(result) >= limit:
             return result
     if res.get("nextPageUrl"):
-        get_form_instances(baseURI, token, survey_id, form_id, limit,
-                           res.get("nextPageUrl"), result)
+        get_form_instances(
+            baseURI, token, survey_id, form_id, limit,
+            res.get("nextPageUrl"), result)
     return result
