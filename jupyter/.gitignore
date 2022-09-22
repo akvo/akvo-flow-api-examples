@@ -179,3 +179,4 @@ cython_debug/
 # Custom Ignore
 /files
 /csv_files
+/log
