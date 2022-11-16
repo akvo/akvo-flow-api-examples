@@ -2,7 +2,7 @@
 
 * Stats Endpoint
 #+name: stats-endpoint
-#+begin_src bash
+#+begin_src bash :results output
   token=$(curl -s \
 	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
 	       -d "username=akvo.flow.test.user8@gmail.com" \
@@ -18,8 +18,8 @@
 #+end_src
 
 #+RESULTS: stats-endpoint
-| { |    |
-| A | 4, |
-| C | 3, |
-| B | 1  |
-| } |    |
+: {
+:   "A": 4,
+:   "C": 3,
+:   "B": 1
+: }
