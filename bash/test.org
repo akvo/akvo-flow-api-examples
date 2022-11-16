@@ -1,8 +1,10 @@
+#+PROPERTY: header-args:bash :exports both
+#+PROPERTY: header-args:bash+ :results output
 #+STARTUP: showall
 
 * Stats Endpoint
 #+name: stats-endpoint
-#+begin_src bash :results output
+#+begin_src bash
   token=$(curl -s \
 	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
 	       -d "username=akvo.flow.test.user8@gmail.com" \
