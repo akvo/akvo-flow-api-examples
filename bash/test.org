@@ -2,8 +2,268 @@
 #+PROPERTY: header-args:bash+ :results output
 #+STARTUP: showall
 
-* Stats Endpoint
-#+name: stats-endpoint
+* Folders List
+#+name: folders
+#+begin_src bash
+  token=$(curl -s \
+	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
+	       -d "username=akvo.flow.test.user8@gmail.com" \
+	       -d "password=7WqCnqCY6kQJV6YQ7dXT" \
+	       -d "grant_type=password" \
+	       -d "scope=openid email" \
+	       "https://akvotest.eu.auth0.com/oauth/token" \
+	      | jq -r .id_token)
+  curl -s "https://api-auth0.akvotest.org/flow/orgs/uat1/folders" \
+       -H "Content-Type: application/json" \
+       -H "Accept: application/vnd.akvo.flow.v2+json" \
+       -H "Authorization: Bearer ${token}" | jq '.folders[0]'
+#+end_src
+
+#+RESULTS: folders
+: {
+:   "id": "281629115",
+:   "name": "_ _Jana",
+:   "parentId": "0",
+:   "createdAt": "2018-10-15T13:14:10.904Z",
+:   "modifiedAt": "2020-05-28T12:19:14.129Z",
+:   "surveysUrl": "https://api-auth0.akvotest.org/flow/orgs/uat1/surveys?folder_id=281629115",
+:   "foldersUrl": "https://api-auth0.akvotest.org/flow/orgs/uat1/folders?parent_id=281629115"
+: }
+
+* Surveys List
+#+name: surveys-list
+#+begin_src bash
+  token=$(curl -s \
+	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
+	       -d "username=akvo.flow.test.user8@gmail.com" \
+	       -d "password=7WqCnqCY6kQJV6YQ7dXT" \
+	       -d "grant_type=password" \
+	       -d "scope=openid email" \
+	       "https://akvotest.eu.auth0.com/oauth/token" \
+	      | jq -r .id_token)
+  curl -s "https://api-auth0.akvotest.org/flow/orgs/uat1/surveys?folder_id=281629115" \
+       -H "Content-Type: application/json" \
+       -H "Accept: application/vnd.akvo.flow.v2+json" \
+       -H "Authorization: Bearer ${token}" | jq '.surveys[0]'
+#+end_src
+
+#+RESULTS: surveys-list
+: {
+:   "id": "788569134",
+:   "name": "Lesotho cleaning blanks",
+:   "folderId": "281629115",
+:   "createdAt": "2021-06-23T06:25:26.068Z",
+:   "modifiedAt": "2021-06-23T06:25:37.431Z",
+:   "surveyUrl": "https://api-auth0.akvotest.org/flow/orgs/uat1/surveys/788569134"
+: }
+
+* Surveys
+#+name: surveys-endpoint
+#+begin_src bash
+  token=$(curl -s \
+	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
+	       -d "username=akvo.flow.test.user8@gmail.com" \
+	       -d "password=7WqCnqCY6kQJV6YQ7dXT" \
+	       -d "grant_type=password" \
+	       -d "scope=openid email" \
+	       "https://akvotest.eu.auth0.com/oauth/token" \
+	      | jq -r .id_token)
+  curl -s "https://api-auth0.akvotest.org/flow/orgs/uat1/surveys/657869130" \
+       -H "Content-Type: application/json" \
+       -H "Accept: application/vnd.akvo.flow.v2+json" \
+       -H "Authorization: Bearer ${token}" | jq '.forms[0]'
+#+end_src
+
+#+RESULTS: surveys-endpoint
+#+begin_example
+{
+  "id": "644719136",
+  "name": "RF",
+  "questionGroups": [
+    {
+      "id": "642819132",
+      "name": "G1",
+      "repeatable": false,
+      "questions": [
+        {
+          "id": "716109115",
+          "name": "New question - please change name",
+          "type": "FREE_TEXT",
+          "order": 1,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2021-01-12T13:53:40.081Z",
+          "modifiedAt": "2021-01-12T13:53:40.081Z"
+        },
+        {
+          "id": "661689141",
+          "name": "Point name ABC",
+          "type": "OPTION",
+          "order": 2,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2020-10-05T11:50:53.881Z",
+          "modifiedAt": "2021-01-12T13:53:42.396Z"
+        },
+        {
+          "id": "628759139",
+          "name": "Point name random",
+          "type": "FREE_TEXT",
+          "order": 3,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2020-10-05T11:51:06.037Z",
+          "modifiedAt": "2021-01-12T13:53:42.794Z"
+        },
+        {
+          "id": "704409115",
+          "name": "Option question ABC",
+          "type": "OPTION",
+          "order": 4,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2021-01-12T13:38:14.395Z",
+          "modifiedAt": "2021-01-12T13:53:42.942Z"
+        },
+        {
+          "id": "650619131",
+          "name": "Point location",
+          "type": "GEO",
+          "order": 5,
+          "variableName": null,
+          "personalData": true,
+          "createdAt": "2020-10-05T11:51:41.583Z",
+          "modifiedAt": "2021-01-12T13:53:42.942Z"
+        },
+        {
+          "id": "650629134",
+          "name": "Number",
+          "type": "NUMBER",
+          "order": 6,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2020-10-05T11:51:58.351Z",
+          "modifiedAt": "2021-01-12T13:53:42.942Z"
+        }
+      ],
+      "createdAt": "2020-10-05T11:46:34.083Z",
+      "modifiedAt": "2020-10-05T11:50:51.059Z"
+    },
+    {
+      "id": "669859142",
+      "name": "Caddisfly ",
+      "repeatable": true,
+      "questions": [
+        {
+          "id": "719509116",
+          "name": "New question - please change name",
+          "type": "FREE_TEXT",
+          "order": 1,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2021-01-12T13:45:24.590Z",
+          "modifiedAt": "2021-01-12T13:45:24.590Z"
+        },
+        {
+          "id": "652309115",
+          "name": "For testing repeat number",
+          "type": "NUMBER",
+          "order": 2,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2020-10-05T12:36:39.674Z",
+          "modifiedAt": "2021-01-12T13:45:25.603Z"
+        },
+        {
+          "personalData": false,
+          "name": "Caddisfly DO",
+          "type": "CADDISFLY",
+          "modifiedAt": "2021-01-12T13:45:25.713Z",
+          "variableName": null,
+          "id": "673459115",
+          "order": 3,
+          "createdAt": "2020-10-05T12:35:49.097Z",
+          "caddisflyResourceUuid": "cf0840aa-f678-11ea-adc1-0242ac120002"
+        },
+        {
+          "id": "704409116",
+          "name": "Being dependent on B",
+          "type": "PHOTO",
+          "order": 4,
+          "variableName": null,
+          "personalData": false,
+          "createdAt": "2021-01-12T13:38:51.552Z",
+          "modifiedAt": "2021-01-12T13:45:25.837Z"
+        }
+      ],
+      "createdAt": "2020-10-05T12:35:43.676Z",
+      "modifiedAt": "2020-10-05T12:36:37.773Z"
+    }
+  ],
+  "version": 7,
+  "createdAt": "2020-10-05T11:46:25.317Z",
+  "modifiedAt": "2022-11-07T12:39:32.898Z",
+  "formInstancesUrl": "https://api-auth0.akvotest.org/flow/orgs/uat1/form_instances?survey_id=657869130&form_id=644719136"
+}
+#+end_example
+
+* Data Points
+
+#+name: data-points
+#+begin_src bash
+  token=$(curl -s \
+	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
+	       -d "username=akvo.flow.test.user8@gmail.com" \
+	       -d "password=7WqCnqCY6kQJV6YQ7dXT" \
+	       -d "grant_type=password" \
+	       -d "scope=openid email" \
+	       "https://akvotest.eu.auth0.com/oauth/token" \
+	      | jq -r .id_token)
+  curl -s "https://api-auth0.akvotest.org/flow/orgs/uat1/form_instances?survey_id=657869130&form_id=644719136" \
+       -H "Content-Type: application/json" \
+       -H "Accept: application/vnd.akvo.flow.v2+json" \
+       -H "Authorization: Bearer ${token}" | jq '.formInstances[0]'
+#+end_src
+
+#+RESULTS: data-points
+#+begin_example
+{
+  "formVersion": 1,
+  "deviceIdentifier": "jana bluestacks",
+  "dataPointId": "627139136",
+  "submissionDate": "2020-10-05T12:00:40Z",
+  "modifiedAt": "2020-10-05T12:00:46.562Z",
+  "id": "650599137",
+  "responses": {
+    "642819132": [
+      {
+        "628759139": "Monday",
+        "650619131": {
+          "lat": 40.782613,
+          "long": -73.96528,
+          "elev": 0,
+          "code": null
+        },
+        "650629134": 1,
+        "661689141": [
+          {
+            "text": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "identifier": "1b10-pu1v-wvtb",
+  "displayName": "A - mveijg",
+  "formId": "644719136",
+  "surveyalTime": 10,
+  "submitter": "jana bluestacks",
+  "createdAt": "2020-10-05T11:59:58.205Z"
+}
+#+end_example
+
+* Stats
+#+name: stats
 #+begin_src bash
   token=$(curl -s \
 	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
@@ -19,7 +279,7 @@
        -H "Authorization: Bearer ${token}" | jq
 #+end_src
 
-#+RESULTS: stats-endpoint
+#+RESULTS: stats
 : {
 :   "A": 4,
 :   "C": 3,
