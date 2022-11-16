@@ -1,0 +1,25 @@
+#+STARTUP: showall
+
+* Stats Endpoint
+#+name: stats-endpoint
+#+begin_src bash
+  token=$(curl -s \
+	       -d "client_id=qsxNP3Nex0wncADQ9Re6Acz6Fa55SuU8" \
+	       -d "username=akvo.flow.test.user8@gmail.com" \
+	       -d "password=7WqCnqCY6kQJV6YQ7dXT" \
+	       -d "grant_type=password" \
+	       -d "scope=openid email" \
+	       "https://akvotest.eu.auth0.com/oauth/token" \
+	      | jq -r .id_token)
+  curl -s "https://api-auth0.akvotest.org/flow/orgs/uat1/stats?survey_id=657869130&form_id=644719136&question_id=661689141" \
+       -H "Content-Type: application/json" \
+       -H "Accept: application/vnd.akvo.flow.v2+json" \
+       -H "Authorization: Bearer ${token}" | jq
+#+end_src
+
+#+RESULTS: stats-endpoint
+| { |    |
+| A | 4, |
+| C | 3, |
+| B | 1  |
+| } |    |
